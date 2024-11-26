@@ -1,0 +1,2 @@
+id	submitter_id	entity_type	entity_id	category	classification	created_datetime	status	notes
+a30d6ae0-71cd-43e8-93ac-53773e5b37c0	\N	case	fd0d710f-aacc-45b6-ad9e-cc10b5c4a9b1	General	Notification	2021-04-28T12:20:55.637187-05:00	Approved	Non-CCRCC/Rare Kidney tumors: Collecting duct carcinoma

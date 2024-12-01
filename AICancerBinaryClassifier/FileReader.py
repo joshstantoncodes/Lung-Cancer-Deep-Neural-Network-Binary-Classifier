@@ -17,7 +17,7 @@ from tqdm import tqdm
 import pandas as pd
 
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 LOGGER = logging.getLogger("experiment_notebook")
 ARTIFACT_NAME = "complete_data.parquet"

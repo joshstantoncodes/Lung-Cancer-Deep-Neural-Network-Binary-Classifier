@@ -10,7 +10,5 @@
  Batch #1: No specifications of miRNA, trained on entire dataset.
  
  Batch #2: Selected miRNAs were found to be significantly upregulated in patients with lung cancer prior to their chemotherapy/radiation therapy treatment ('hsa-mir-181c', 'hsa-mir-500a', 'hsa-mir-99a', 'hsa-mir-10b'). 
- 
- ![miRNA Nomenclature](/home/josh/Pictures/miRNA Nomenclature.png)
- 
+  
  Batch #3: Selected miRNAs were used to test the hypothesis generated from the aforementioned thesis. The hypothesis being that lung cancer causes dysregulation in miRNA expression on a wider level through grouping via "families" as opposed to individual, specific dysregulation of expression ('hsa-let-7a-1', 'hsa-let-7a-2', 'hsa-let-7a-3', 'hsa-let-7b', 'hsa-let-7c', 'hsa-let-7d', 'hsa-let-7e', 'hsa-let-7f-1', 'hsa-let-7f-2', 'hsa-let-7g', 'hsa-let-7i', 'hsa-mir-130a', 'hsa-mir-130b', 'hsa-mir-30a', 'hsa-mir-30b', 'hsa-mir-30c-1', 'hsa-mir-30c-2', 'hsa-mir-30d', 'hsa-mir-30e', 'hsa-mir-323a', 'hsa-mir-323b', 'hsa-mir-181a-1', 'hsa-mir-181a-2', 'hsa-mir-181b-1', 'hsa-mir-181b-2', 'hsa-mir-181c', 'hsa-mir-181d', 'hsa-mir-500a', 'hsa-mir-500b', 'hsa-mir-10a', 'hsa-mir-10b', 'hsa-mir-99a', 'hsa-mir-99b'). 

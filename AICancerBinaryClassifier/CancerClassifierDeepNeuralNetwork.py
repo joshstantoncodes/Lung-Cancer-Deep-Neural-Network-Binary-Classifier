@@ -38,7 +38,7 @@ X_scaled = scaler.fit_transform(X)  # Calculates the mean and standard deviation
 # of each miRNA
 
 # Split into training and testing sets of even distribution
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.5, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75, random_state=42)
 
 """ Deep Neural Network Model Building 
 
@@ -71,7 +71,7 @@ model.compile(optimizer='adamax', loss='binary_crossentropy', metrics=['accuracy
     split is also 50% to match the distribution of the previous split of test and 
     training data.  
 """
-history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.5)
+history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.75)
 
 # Evaluate the model
 test_loss, test_accuracy = model.evaluate(X_test, y_test)
@@ -96,7 +96,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.5, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75, random_state=42)
 """ Deep Neural Network Model Building 
 
     Create the deep neural network model, beginning with 256 nodes and gradually training
@@ -128,7 +128,7 @@ model.compile(optimizer='adamax', loss='binary_crossentropy', metrics=['accuracy
     split is also 50% to match the distribution of the previous split of test and 
     training data.  
 """
-history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.5)
+history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.75)
 
 # Evaluate the model
 test_loss, test_accuracy = model.evaluate(X_test, y_test)
@@ -160,7 +160,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 # Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.5, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75, random_state=42)
 
 """ Deep Neural Network Model Building 
 
@@ -188,14 +188,14 @@ model.compile(optimizer='adamax', loss='binary_crossentropy', metrics=['accuracy
 
 """ Run the TensorFlow Training Function:
 
-    the model is trained using the predefined testing sets of the labelled and
+    The model is trained using the predefined testing sets of the labelled and
     unlabeled data, running for 200 epochs (iterations), with a batch size of 32
     specifying that every 32 samples leads to an update in learning. The validation
     split is also 50% to match the distribution of the previous split of test and 
     training data.  
 """
 
-history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.5)
+history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.75)
 
 # Evaluate the model
 test_loss, test_accuracy = model.evaluate(X_test, y_test)

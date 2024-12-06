@@ -17,8 +17,9 @@
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 import tensorflow as tf
+from tensorflow.python.keras.backend import epsilon
 
 # Load the data
 data = pd.read_parquet('complete_data.parquet')
@@ -30,15 +31,15 @@ data = pd.read_parquet('complete_data.parquet')
     to the wide ranging variance in the datasets. 
 """
 X = data.drop(['cancer'], axis=1)  # Remove 'cancer' column to allow learning
-y = data['cancer']  # Indicates the correct dissertation between cancer and noncancer
+Y = data['cancer']  # Indicates the correct dissertation between cancer and noncancer
 
 # Data pre-processing
-scaler = StandardScaler()
+scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(X)  # Calculates the mean and standard deviation
 # of each miRNA
 
 # Split into training and testing sets of even distribution
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75, random_state=42)
+X_train, X_test, Y_train, Y_test = train_test_split(X_scaled, Y, test_size=0.2, random_state=42)
 
 """ Deep Neural Network Model Building 
 
@@ -48,10 +49,34 @@ X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75,
 """
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(256, activation='relu', input_shape=(X.shape[1],)),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dense(1, activation='sigmoid')
 ])
 
@@ -71,10 +96,10 @@ model.compile(optimizer='adamax', loss='binary_crossentropy', metrics=['accuracy
     split is also 50% to match the distribution of the previous split of test and 
     training data.  
 """
-history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.75)
+history = model.fit(X_train, Y_train, epochs=50, batch_size=32, validation_split=0.2)
 
 # Evaluate the model
-test_loss, test_accuracy = model.evaluate(X_test, y_test)
+test_loss, test_accuracy = model.evaluate(X_test, Y_test)
 print(f"Test accuracy: {test_accuracy}")
 
 # Make predictions
@@ -89,14 +114,14 @@ predictions = model.predict(X_test)
 #
 selected_mirnas = ['hsa-mir-181c', 'hsa-mir-500a', 'hsa-mir-99a', 'hsa-mir-10b']
 X = data[selected_mirnas]
-y = data['cancer']
+Y= data['cancer']
 
 # Preprocess the data
-scaler = StandardScaler()
+scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(X)
 
 # Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75, random_state=42)
+X_train, X_test, Y_train, Y_test = train_test_split(X_scaled, Y, test_size=0.2, random_state=42)
 """ Deep Neural Network Model Building 
 
     Create the deep neural network model, beginning with 256 nodes and gradually training
@@ -105,13 +130,36 @@ X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75,
 """
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(256, activation='relu', input_shape=(X.shape[1],)),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dense(1, activation='sigmoid')
 ])
-
 """ Compiles the model:
 
     The algorithm uses the adamax optimizer for gradient descent,
@@ -128,10 +176,10 @@ model.compile(optimizer='adamax', loss='binary_crossentropy', metrics=['accuracy
     split is also 50% to match the distribution of the previous split of test and 
     training data.  
 """
-history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.75)
+history = model.fit(X_train, Y_train, epochs=50, batch_size=32, validation_split=0.2)
 
 # Evaluate the model
-test_loss, test_accuracy = model.evaluate(X_test, y_test)
+test_loss, test_accuracy = model.evaluate(X_test, Y_test)
 print(f"Test accuracy: {test_accuracy}")
 
 # Make predictions
@@ -153,14 +201,14 @@ family_mirnas = ['hsa-let-7a-1', 'hsa-let-7a-2', 'hsa-let-7a-3', 'hsa-let-7b', '
                  'hsa-mir-10b', 'hsa-mir-99a', 'hsa-mir-99b']
 
 X = data[family_mirnas]
-y = data['cancer']
+Y= data['cancer']
 
 # Preprocess the data
-scaler = StandardScaler()
+scaler = MinMaxScaler()
 X_scaled = scaler.fit_transform(X)
 
 # Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75, random_state=42)
+X_train, X_test, Y_train, Y_test = train_test_split(X_scaled, Y, test_size=0.2, random_state=42)
 
 """ Deep Neural Network Model Building 
 
@@ -170,13 +218,36 @@ X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.75,
 """
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(256, activation='relu', input_shape=(X.shape[1],)),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.BatchNormalization(
+        momentum=0.5,
+        epsilon=0.00001,
+        center=True,
+        scale=True,
+        beta_initializer='zeros',
+        gamma_initializer='ones'
+    ),
     tf.keras.layers.Dense(1, activation='sigmoid')
 ])
-
 """ Compiles the model:
 
     The algorithm uses the adamax optimizer for gradient descent,
@@ -195,10 +266,10 @@ model.compile(optimizer='adamax', loss='binary_crossentropy', metrics=['accuracy
     training data.  
 """
 
-history = model.fit(X_train, y_train, epochs=200, batch_size=32, validation_split=0.75)
+history = model.fit(X_train, Y_train, epochs=50, batch_size=32, validation_split=0.2)
 
 # Evaluate the model
-test_loss, test_accuracy = model.evaluate(X_test, y_test)
+test_loss, test_accuracy = model.evaluate(X_test, Y_test)
 print(f"Test accuracy: {test_accuracy}")
 
 # Make predictions
